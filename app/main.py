@@ -27,10 +27,9 @@ def add_task():
     task_manager.add_task(task, time_estimate)
     return jsonify({"message": "Task added successfully"}), 201
 
-@app.route('/prioritize-tasks', methods=['GET'])
+@app.route('/prioritize-tasks', methods=['GET']) # TODO: Da sistemare
 def prioritize_tasks():
     try:
-        # Codice per la priorizzazione dei task
         tasks = task_manager.get_tasks()
         prioritized_tasks = prioritize_tasks(tasks)
         return jsonify(prioritized_tasks), 200
