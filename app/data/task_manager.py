@@ -1,0 +1,1 @@
+# Gestisce le operazioni CRUD (Create, Read, Update, Delete) sulle attività e la gestione delle liste di cose da fare.
