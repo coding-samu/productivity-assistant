@@ -32,7 +32,7 @@ def prioritize_tasks():
     try:
         # Codice per la priorizzazione dei task
         tasks = task_manager.get_tasks()
-        prioritized_tasks = sorted(tasks, key=lambda x: x['priority'])
+        prioritized_tasks = prioritize_tasks(tasks)
         return jsonify(prioritized_tasks), 200
     except Exception as e:
         # Stampa l'errore per il debug
