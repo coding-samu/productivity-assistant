@@ -6,11 +6,14 @@ from transformers import pipeline
 classifier = pipeline('text-classification', model='distilbert-base-uncased-finetuned-sst-2-english')
 
 def prioritize_tasks(tasks):
-    # Usa l'AI per assegnare priorità in base al contenuto della task
-    prioritized = sorted(tasks, key=lambda x: classify_task(x['task']), reverse=True)
+    # Filtra i task vuoti
+    valid_tasks = [task for task in tasks if task['task']]
+    prioritized = sorted(valid_tasks, key=lambda x: classify_task(x['task']), reverse=True)
     return prioritized
 
 def classify_task(task):
-    # Assegna un punteggio di priorità in base all'analisi del testo
+    if not task:
+        return 0
     result = classifier(task)[0]
+    print(f"Classify Task Result: {result}")  # Aggiungi questa linea per il debug
     return result['score'] if result['label'] == 'POSITIVE' else -result['score']
