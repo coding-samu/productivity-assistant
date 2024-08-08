@@ -1,0 +1,1 @@
+# Punto di ingresso dell'applicazione. Contiene la logica principale del programma e avvia l'assistente.
