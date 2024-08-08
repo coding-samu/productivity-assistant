@@ -10,5 +10,8 @@ COPY . /app
 # Installa le dipendenze
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Esponi la porta 8000 per Flask
+EXPOSE 8000
+
 # Comando di avvio
 CMD ["python", "app/main.py"]
