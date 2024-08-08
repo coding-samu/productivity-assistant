@@ -1,0 +1,1 @@
+# Contiene la definizione dei modelli AI e la logica per la prioritizzazione delle attività.
