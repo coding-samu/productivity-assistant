@@ -9,10 +9,17 @@ class TaskManager:
         self.tasks = self.load_tasks()
 
     def load_tasks(self):
-        if os.path.exists(self.file_path):
-            with open(self.file_path, 'r') as file:
+        # Verifica se il file esiste
+        if not os.path.exists(self.file_path):
+            return []
+
+        # Prova a caricare i dati dal file
+        try:
+            with open(self.file_path, "r") as file:
                 return json.load(file)
-        return []
+        except json.JSONDecodeError:
+            # Se il file è vuoto o malformato, ritorna una lista vuota
+            return []
 
     def save_tasks(self):
         with open(self.file_path, 'w') as file:
