@@ -14,6 +14,11 @@ task_manager = TaskManager()
 def home():
     return "Welcome to the Productivity Assistant!"
 
+@app.route('/tasks', methods=['GET'])
+def get_tasks():
+    tasks = task_manager.get_tasks()
+    return jsonify(tasks), 200
+
 @app.route('/add-task', methods=['POST'])
 def add_task():
     data = request.json
@@ -23,11 +28,16 @@ def add_task():
     return jsonify({"message": "Task added successfully"}), 201
 
 @app.route('/prioritize-tasks', methods=['GET'])
-def get_prioritized_tasks():
-    tasks = task_manager.get_tasks()
-    prioritized = prioritize_tasks(tasks)
-    return jsonify(prioritized), 200
+def prioritize_tasks():
+    try:
+        # Codice per la priorizzazione dei task
+        tasks = task_manager.get_tasks()
+        prioritized_tasks = sorted(tasks, key=lambda x: x['priority'])
+        return jsonify(prioritized_tasks), 200
+    except Exception as e:
+        # Stampa l'errore per il debug
+        print(f"Errore durante la prioritizzazione: {e}")
+        return jsonify({"error": "Errore durante la prioritizzazione dei task"}), 500
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=8000)
