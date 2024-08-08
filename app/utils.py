@@ -1,0 +1,1 @@
+# Contiene funzioni di supporto utilizzate nel progetto, come funzioni per il parsing del testo o per il calcolo del tempo stimato delle attività.
