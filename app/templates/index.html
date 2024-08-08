@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productivity Assistant</title>
+</head>
+<body>
+    <h1>Welcome to the Productivity Assistant</h1>
+    <form id="task-form">
+        <input type="text" id="task" placeholder="Enter task">
+        <input type="number" id="time_estimate" placeholder="Time estimate (minutes)">
+        <button type="submit">Add Task</button>
+    </form>
+    <ul id="task-list"></ul>
+
+    <script>
+        // JS per gestire le interazioni front-end
+        document.getElementById('task-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const task = document.getElementById('task').value;
+            const timeEstimate = document.getElementById('time_estimate').value;
+            fetch('/add-task', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ task: task, time_estimate: timeEstimate })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                document.getElementById('task-list').innerHTML += `<li>${task} (${timeEstimate} min)</li>`;
+            });
+        });
+    </script>
+</body>
+</html>
