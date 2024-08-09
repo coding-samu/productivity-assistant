@@ -1,9 +1,7 @@
-# Punto di ingresso dell'applicazione. Contiene la logica principale del programma e avvia l'assistente.
-
+# main.py
 from flask import Flask, request, jsonify
 from app.data.task_manager import TaskManager
-from app.models import prioritize_tasks
-import os
+from app.models import prioritize_tasks_model  # Cambia il nome dell'import
 
 app = Flask(__name__)
 
@@ -27,11 +25,11 @@ def add_task():
     task_manager.add_task(task, time_estimate)
     return jsonify({"message": "Task added successfully"}), 201
 
-@app.route('/prioritize-tasks', methods=['GET']) # TODO: Da sistemare
-def prioritize_tasks():
+@app.route('/prioritize-tasks', methods=['GET'])
+def prioritize_tasks_route():  # Cambia il nome della funzione di Flask
     try:
         tasks = task_manager.get_tasks()
-        prioritized_tasks = prioritize_tasks(tasks)
+        prioritized_tasks = prioritize_tasks_model(tasks)  # Chiama la funzione con il nuovo nome
         return jsonify(prioritized_tasks), 200
     except Exception as e:
         # Stampa l'errore per il debug

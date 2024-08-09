@@ -1,16 +1,14 @@
-# Contiene la definizione dei modelli AI e la logica per la prioritizzazione delle attività.
-
+# models.py
 from transformers import pipeline
 
 # Carica un modello preaddestrato per la comprensione del linguaggio
-# Verifica se il pipeline è creato correttamente
 try:
     classifier = pipeline('text-classification', model='distilbert-base-uncased-finetuned-sst-2-english')
     print("Classifier loaded successfully.")
 except Exception as e:
     print(f"Errore nel caricamento del classificatore: {e}")
 
-def prioritize_tasks(tasks):
+def prioritize_tasks_model(tasks):  # Cambia il nome della funzione di prioritizzazione
     valid_tasks = [task for task in tasks if task.get('task')]
     print(f"Valid Tasks: {valid_tasks}")  # Debug: Visualizza i task validi
     prioritized = sorted(valid_tasks, key=lambda x: classify_task(x['task']), reverse=True)
