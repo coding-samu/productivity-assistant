@@ -29,5 +29,9 @@ class TaskManager:
         self.tasks.append({'task': task, 'time_estimate': time_estimate})
         self.save_tasks()
 
+    def remove_task(self, task_name):
+        self.tasks = [task for task in self.tasks if task['task'] != task_name]
+        self.save_tasks()
+
     def get_tasks(self):
         return self.tasks

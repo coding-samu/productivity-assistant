@@ -8,14 +8,30 @@
 <body>
     <h1>Welcome to the Productivity Assistant</h1>
     <form id="task-form">
-        <input type="text" id="task" placeholder="Enter task">
-        <input type="number" id="time_estimate" placeholder="Time estimate (minutes)">
+        <input type="text" id="task" placeholder="Enter task" required>
+        <input type="number" id="time_estimate" placeholder="Time estimate (minutes)" required>
         <button type="submit">Add Task</button>
     </form>
+    <button id="prioritize-button">Prioritize Tasks</button>
     <ul id="task-list"></ul>
 
     <script>
-        // JS per gestire le interazioni front-end
+        // Funzione per caricare i task dalla API e mostrarli
+        function loadTasks() {
+            fetch('/tasks')
+                .then(response => response.json())
+                .then(tasks => {
+                    const taskList = document.getElementById('task-list');
+                    taskList.innerHTML = ''; // Pulisce la lista prima di riempirla
+                    tasks.forEach(task => {
+                        taskList.innerHTML += `<li>${task.task} (${task.time_estimate} min) 
+                                                <button onclick="removeTask('${task.task}')">Remove</button>
+                                               </li>`;
+                    });
+                });
+        }
+
+        // Aggiunge un task alla lista tramite la API
         document.getElementById('task-form').addEventListener('submit', function(event) {
             event.preventDefault();
             const task = document.getElementById('task').value;
@@ -30,9 +46,41 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                document.getElementById('task-list').innerHTML += `<li>${task} (${timeEstimate} min)</li>`;
+                loadTasks(); // Ricarica la lista dopo l'inserimento
             });
         });
+
+        // Prioritizza i task e li visualizza ordinati
+        document.getElementById('prioritize-button').addEventListener('click', function() {
+            fetch('/prioritize-tasks')
+                .then(response => response.json())
+                .then(tasks => {
+                    const taskList = document.getElementById('task-list');
+                    taskList.innerHTML = ''; // Pulisce la lista prima di riempirla
+                    tasks.forEach(task => {
+                        taskList.innerHTML += `<li>${task.task} (${task.time_estimate} min)</li>`;
+                    });
+                });
+        });
+
+        // Funzione per rimuovere un task
+        function removeTask(taskName) {
+            fetch('/remove-task', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ task: taskName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                loadTasks(); // Ricarica la lista dopo la rimozione
+            });
+        }
+
+        // Carica i task all'avvio della pagina
+        loadTasks();
     </script>
 </body>
 </html>
